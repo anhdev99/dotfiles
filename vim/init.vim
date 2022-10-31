@@ -1,1 +1,1 @@
-/Users/kietnguyen/Data/anhdev99/github/dotfiles/vimrc
+/Users/kietnguyen/Data/anhdev99/Gitlab/Untitled/vimrc

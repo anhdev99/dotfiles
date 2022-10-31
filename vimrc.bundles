@@ -22,6 +22,9 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'valloric/MatchTagAlways'
 Plug 'jiangmiao/auto-pairs'
 Plug 'dense-analysis/ale'
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+
 call plug#end()
 
 " Local config
