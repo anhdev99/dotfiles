@@ -1,96 +1,8 @@
-" Set this to 1 to use ultisnips for snippet handling
-let s:using_snippets = 0
-let mapleader = "\<Space>"
-" vim-plug: {{{
-call plug#begin('~/.vim/plugged')
+	" Leader
+let mapleader = " "
 
-Plug 'OmniSharp/omnisharp-vim'
-
-" Mappings, code-actions available flag and statusline integration
-Plug 'nickspoons/vim-sharpenup'
-
-" Linting/error highlighting
-Plug 'dense-analysis/ale'
-
-" Vim FZF integration, used as OmniSharp selector
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-
-" Autocompletion
-Plug 'prabirshrestha/asyncomplete.vim'
-
-" Colorscheme
-Plug 'gruvbox-community/gruvbox'
-
-" Statusline
-Plug 'itchyny/lightline.vim'
-Plug 'shinchu/lightline-gruvbox.vim'
-Plug 'maximbaz/lightline-ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'dracula/vim'
-Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'valloric/MatchTagAlways'
-Plug 'jiangmiao/auto-pairs'
-Plug 'dense-analysis/ale'
-Plug 'OmniSharp/omnisharp-vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'storyn26383/vim-vue'
-Plug 'majutsushi/tagbar'
-" Snippet support
-if s:using_snippets
-  Plug 'sirver/ultisnips'
-endif
-
-call plug#end()
-" }}}
-
-" Settings: {{{
-filetype indent plugin on
-if !exists('g:syntax_on') | syntax enable | endif
-set encoding=utf-8
-scriptencoding utf-8
-
-
-"set completeopt=menuone,noinsert,noselect,popuphidden
-"set completepopup=highlight:Pmenu,border:off
-
-set backspace=indent,eol,start
+set backspace=2   " Backspace deletes like most programs in insert mode
 set nobackup
-
-set expandtab
-set shiftround
-set shiftwidth=4
-set softtabstop=-1
-set tabstop=8
-set textwidth=80
-set title
-
-set hidden
-set nofixendofline
-set nostartofline
-set splitbelow
-set splitright
-
-set hlsearch
-set incsearch
-set laststatus=2
-set nonumber
-set noruler
-set noshowmode
-set signcolumn=yes
-
-set mouse=a
-set updatetime=1000
 set nowritebackup
 set noswapfile
 set history=50
@@ -107,8 +19,8 @@ set autoread
 set autowrite
 
 " Softtabs, 2 spaces
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 
@@ -142,19 +54,28 @@ set clipboard=unnamed
 
 set lazyredraw
 set termguicolors
+
 set updatetime=300
 
 set background=dark
 
 set rtp+=/opt/homebrew/opt/fzf
 
+colorscheme dracula
 
-" }}}
+let g:python3_host_prog="/usr/bin/python3"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+filetype plugin indent on
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
 
 augroup vimrcEx
   autocmd!
@@ -167,28 +88,18 @@ augroup vimrcEx
         \ endif
 augroup END
 
-" Auto indent your file.
-map <F7> gg=G<C-o><C-o>
-" Navigate Tabs
-map <C-t><up> :tabr<cr>
-map <C-t><down> :tabl<cr>
-map <C-t><left> :tabp<cr>
-map <C-t><right> :tabn<cr>
-
-" Supprot for different goto definitions for different file types.
-autocmd FileType cs nmap <silent> gd :OmniSharpGotoDefinition<CR>
-autocmd FileType cs nnoremap <buffer> <Leader>fu :OmniSharpFindUsages<CR>
-autocmd FileType cs nnoremap <buffer> <Leader>fi :OmniSharpFindImplementations<CR>
-autocmd FileType cs nnoremap <Leader><Space> :OmniSharpGetCodeActions<CR>
-
-  autocmd FileType cs nmap <silent> <buffer> <Leader>ufx <Plug>(omnisharp_fix_usings)
-autocmd FileType ts nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
-autocmd FileType html nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
 " Go file config
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
 au FileType go set tabstop=4
+" Supprot for different goto definitions for different file types.
+autocmd FileType cs nmap <silent> gd :OmniSharpGotoDefinition<CR>
+autocmd FileType cs nnoremap <buffer> <Leader>fu :OmniSharpFindUsages<CR>
+autocmd FileType cs nnoremap <buffer> <Leader>fi :OmniSharpFindImplementations<CR>
+autocmd FileType cs nnoremap <Leader><Space> :OmniSharpGetCodeActions<CR>
+autocmd FileType ts nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
+autocmd FileType html nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
 
 au BufRead,BufNewFile .eslintrc.json setlocal filetype=json
 au BufRead,BufNewFile .babelrc setlocal filetype=json
@@ -206,10 +117,6 @@ let g:is_posix = 1
 vmap <Tab> >gv
 vmap <S-Tab> <gv
 
-" Use tab with text block
-vmap <Tab> >gv
-vmap <S-Tab> <gv
-
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
@@ -219,25 +126,18 @@ nnoremap <Down> :echoe "Use j"<CR>
 nnoremap <Leader>\ :vsplit<CR>
 nnoremap <Leader>/ :split<CR>
 
-
-noremap <silent> <c-k> :wincmd k<CR>
-noremap <silent> <c-j> :wincmd j<CR>
-noremap <silent> <c-h> :wincmd h<CR>
-noremap <silent> <c-l> :wincmd l<CR>
-
 nmap = :res +2<CR> " increase pane by 2 
 nmap - :res -2<CR> " decrease pane by 2
 nmap ] :vertical res +2<CR> " vertical increase pane by 2
 nmap [ :vertical res -2<CR> " vertical decrease pane by 2
 
 " Remove highlight
-" map <C-h> :nohl<CR>
+map <C-h> :nohl<CR>
 
 " NERD tree configuration
 noremap <C-d> :NERDTreeToggle<CR>
 nnoremap F :NERDTreeFind<CR>
 
-nmap <F8> :TagbarToggle<CR>
 let NERDTreeShowHidden=1
 
 " fzf
@@ -246,10 +146,11 @@ noremap ; :Buffers<CR>
 
 " bind \ (backward slash) to grep shortcut
 nnoremap K :Ag <C-R><C-W><CR>
-"nnoremap <C-k> /<C-R><C-W><CR>
+nnoremap <C-k> /<C-R><C-W><CR>
 nnoremap \ :Ag<SPACE>
 
 " coc.vim config
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -296,170 +197,68 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 " Search n-chars
 map / <Plug>(easymotion-sn)
 
-" Colors: {{{
-augroup ColorschemePreferences
-  autocmd!
-  " These preferences clear some gruvbox background colours, allowing transparency
-  autocmd ColorScheme * highlight Normal     ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
-  autocmd ColorScheme * highlight Todo       ctermbg=NONE guibg=NONE
-  " Link ALE sign highlights to similar equivalents without background colours
-  autocmd ColorScheme * highlight link ALEErrorSign   WarningMsg
-  autocmd ColorScheme * highlight link ALEWarningSign ModeMsg
-  autocmd ColorScheme * highlight link ALEInfoSign    Identifier
-augroup END
-
-" Use truecolor in the terminal, when it is supported
-if has('termguicolors')
-  set termguicolors
-endif
-
-set background=dark
-colorscheme gruvbox
-" }}}
-
-" ALE: {{{
-let g:ale_sign_error = '•'
-let g:ale_sign_warning = '•'
-let g:ale_sign_info = '·'
-let g:ale_sign_style_error = '·'
-let g:ale_sign_style_warning = '·'
-
-let g:ale_linters = { 'cs': ['OmniSharp'] }
-" }}}
-
-" Asyncomplete: {{{
-" let g:asyncomplete_auto_popup = 0
-
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-" }}}
-
-let g:asyncomplete_auto_completeopt = 0
-
-set completeopt=menuone,noinsert,noselect,preview
-
-" Sharpenup: {{{
-" All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
-" :OmniSharpGotoDefinition
-let g:sharpenup_map_prefix = '<Space>os'
-
-let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
-let g:sharpenup_statusline_opts.Highlight = 0
-" Create default mappings
-let g:NERDCreateDefaultMappings = 1
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines = 1
-augroup OmniSharpIntegrations
-  autocmd!
-  autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
-augroup END
-" }}}
-
-" Lightline: {{{
+" Lightline
 let g:lightline = {
-\ 'colorscheme': 'gruvbox',
-\ 'active': {
-\   'right': [
-\     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
-\     ['lineinfo'], ['percent'],
-\     ['fileformat', 'fileencoding', 'filetype', 'sharpenup']
-\   ]
-\ },
-\ 'inactive': {
-\   'right': [['lineinfo'], ['percent'], ['sharpenup']]
-\ },
-\ 'component': {
-\   'sharpenup': sharpenup#statusline#Build()
-\ },
-\ 'component_expand': {
-\   'linter_checking': 'lightline#ale#checking',
-\   'linter_infos': 'lightline#ale#infos',
-\   'linter_warnings': 'lightline#ale#warnings',
-\   'linter_errors': 'lightline#ale#errors',
-\   'linter_ok': 'lightline#ale#ok'
-  \  },
-  \ 'component_type': {
-  \   'linter_checking': 'right',
-  \   'linter_infos': 'right',
-  \   'linter_warnings': 'warning',
-  \   'linter_errors': 'error',
-  \   'linter_ok': 'right'
-\  }
-\}
-" Use unicode chars for ale indicators in the statusline
-let g:lightline#ale#indicator_checking = "\uf110 "
-let g:lightline#ale#indicator_infos = "\uf129 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c "
-" }}}
+      \ 'colorscheme': 'darcula',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo', 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ }
 
-" OmniSharp: {{{
-let g:OmniSharp_popup_position = 'peek'
-if has('nvim')
-  let g:OmniSharp_popup_options = {
-  \ 'winblend': 30,
-  \ 'winhl': 'Normal:Normal,FloatBorder:ModeMsg',
-  \ 'border': 'rounded'
-  \}
-else
-  let g:OmniSharp_popup_options = {
-  \ 'highlight': 'Normal',
-  \ 'padding': [0],
-  \ 'border': [1],
-  \ 'borderchars': ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
-  \ 'borderhighlight': ['ModeMsg']
-  \}
-endif
-let g:OmniSharp_popup_mappings = {
-\ 'sigNext': '<C-n>',
-\ 'sigPrev': '<C-p>',
-\ 'pageDown': ['<C-f>', '<PageDown>'],
-\ 'pageUp': ['<C-b>', '<PageUp>']
+let g:ale_linters = {
+\ 'cs': ['OmniSharp']
 \}
 
-if s:using_snippets
-  let g:OmniSharp_want_snippet = 1
-endif
+" Multi select
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
 
-let g:OmniSharp_highlight_groups = {
-\ 'ExcludedCode': 'NonText'
-\}
-let g:AutoPairsFlyMode = 1
+" OmniSharp
+let g:OmniSharp_server_stdio = 0
+let g:OmniSharp_server_use_mono = 1
+let g:OmniSharp_server_use_net6 = 1
+let g:syntastic_cs_checkers = ['code_checker']
+let g:OmniSharp_selector_ui = 'fzf'    " Use fzf
+let g:OmniSharp_selector_ui = 'clap'   " Use vim-clap
+let g:OmniSharp_selector_ui = 'ctrlp'  " Use ctrlp.vim
+let g:OmniSharp_selector_ui = 'unite'  " Use unite.vim
+let g:OmniSharp_selector_ui = ''       " Use vim - command line, quickfix etc.
+let g:OmniSharp_selector_findusages = 'fzf'
+let g:OmniSharp_selector_findusages = 'clap'
+" fzf.vim
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
 " Auto close tag
 let g:closetag_filenames = '*.html,*.js,*.jsx,*.vue'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:jsx_ext_required = 0
-inoremap ><Tab> ><Esc>F<lyt>o</<C-r>"><Esc>O
-" }}}
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
+
