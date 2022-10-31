@@ -15,7 +15,7 @@ function install_macos {
     return
   fi
   echo "MacOS detected"
- # xcode-select --install
+  xcode-select --install
 
   if [ "$(is_installed brew)" == "0" ]; then
     echo "Installing Homebrew"
@@ -110,7 +110,7 @@ function link_dotfiles {
   ln -s $(pwd)/vimrc ~/.vimrc
   ln -s $(pwd)/vimrc.bundles ~/.vimrc.bundles
 
-/Users/kietnguyen/dotfiles_1666684735/.vimrc.bundles  rm -rf $HOME/.config/nvim/init.vim
+  rm -rf $HOME/.config/nvim/init.vim
   rm -rf $HOME/.config/nvim
   rm -rf $HOME/.vim/bundle/*
 

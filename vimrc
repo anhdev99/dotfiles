@@ -1,60 +1,7 @@
 " Set this to 1 to use ultisnips for snippet handling
-let s:using_snippets = 0
+ let s:using_snippets = 0
 let mapleader = "\<Space>"
-" vim-plug: {{{
-call plug#begin('~/.vim/plugged')
 
-Plug 'OmniSharp/omnisharp-vim'
-
-" Mappings, code-actions available flag and statusline integration
-Plug 'nickspoons/vim-sharpenup'
-
-" Linting/error highlighting
-Plug 'dense-analysis/ale'
-
-" Vim FZF integration, used as OmniSharp selector
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-
-" Autocompletion
-Plug 'prabirshrestha/asyncomplete.vim'
-
-" Colorscheme
-Plug 'gruvbox-community/gruvbox'
-
-" Statusline
-Plug 'itchyny/lightline.vim'
-Plug 'shinchu/lightline-gruvbox.vim'
-Plug 'maximbaz/lightline-ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'dracula/vim'
-Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'valloric/MatchTagAlways'
-Plug 'jiangmiao/auto-pairs'
-Plug 'dense-analysis/ale'
-Plug 'OmniSharp/omnisharp-vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'storyn26383/vim-vue'
-Plug 'majutsushi/tagbar'
-" Snippet support
-if s:using_snippets
-  Plug 'sirver/ultisnips'
-endif
-
-call plug#end()
-" }}}
-
-" Settings: {{{
 filetype indent plugin on
 if !exists('g:syntax_on') | syntax enable | endif
 set encoding=utf-8
@@ -149,7 +96,19 @@ set background=dark
 set rtp+=/opt/homebrew/opt/fzf
 
 
-" }}}
+let g:python3_host_prog="/usr/bin/python3"
+
+filetype plugin indent on
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -181,7 +140,7 @@ autocmd FileType cs nnoremap <buffer> <Leader>fu :OmniSharpFindUsages<CR>
 autocmd FileType cs nnoremap <buffer> <Leader>fi :OmniSharpFindImplementations<CR>
 autocmd FileType cs nnoremap <Leader><Space> :OmniSharpGetCodeActions<CR>
 
-  autocmd FileType cs nmap <silent> <buffer> <Leader>ufx <Plug>(omnisharp_fix_usings)
+autocmd FileType cs nmap <silent> <buffer> <Leader>ufx <Plug>(omnisharp_fix_usings)
 autocmd FileType ts nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
 autocmd FileType html nmap <silent> gd :call CocActionAsync('jumpDefinition')<CR>
 " Go file config
@@ -225,7 +184,7 @@ noremap <silent> <c-j> :wincmd j<CR>
 noremap <silent> <c-h> :wincmd h<CR>
 noremap <silent> <c-l> :wincmd l<CR>
 
-nmap = :res +2<CR> " increase pane by 2 
+nmap = :res +2<CR> " increase pane by 2
 nmap - :res -2<CR> " decrease pane by 2
 nmap ] :vertical res +2<CR> " vertical increase pane by 2
 nmap [ :vertical res -2<CR> " vertical decrease pane by 2
@@ -378,7 +337,7 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 augroup OmniSharpIntegrations
   autocmd!
@@ -425,7 +384,6 @@ let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 " }}}
 
-" OmniSharp: {{{
 let g:OmniSharp_popup_position = 'peek'
 if has('nvim')
   let g:OmniSharp_popup_options = {
@@ -461,5 +419,10 @@ let g:AutoPairsFlyMode = 1
 let g:closetag_filenames = '*.html,*.js,*.jsx,*.vue'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:jsx_ext_required = 0
-inoremap ><Tab> ><Esc>F<lyt>o</<C-r>"><Esc>O
-" }}}
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
+
+
