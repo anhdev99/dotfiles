@@ -31,8 +31,8 @@ Plug 'OmniSharp/omnisharp-vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'storyn26383/vim-vue'
 Plug 'majutsushi/tagbar'
-" Snippet support
-  Plug 'sirver/ultisnips'
+Plug 'sirver/ultisnips'
+Plug 'leafoftree/vim-vue-plugin'
 
 call plug#end()
 
