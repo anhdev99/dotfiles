@@ -1,1 +1,1 @@
-/Users/kietnguyen/Data/anhdev99/github/dotfiles/vimrc
+/Users/anhdev99/anhdev99/sources/dotfiles/vimrc
