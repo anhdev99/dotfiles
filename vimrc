@@ -434,7 +434,8 @@ let g:AutoPairsFlyMode = 1
 let g:closetag_filenames = '*.html,*.js,*.jsx,*.vue'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:jsx_ext_required = 0
-
+let g:nvim_markdown_preview_theme = 'github'
+let g:nvim_markdown_preview_format = 'markdown'
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local

@@ -33,6 +33,7 @@ Plug 'storyn26383/vim-vue'
 Plug 'majutsushi/tagbar'
 Plug 'sirver/ultisnips'
 Plug 'leafoftree/vim-vue-plugin'
+Plug 'davidgranstrom/nvim-markdown-preview'
 
 call plug#end()
 
