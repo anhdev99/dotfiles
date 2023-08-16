@@ -1,7 +1,11 @@
 # If you come from bash you might have to change your $PATH.
+export JAVA_HOME="/opt/homebrew/opt/openjdk"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-
+export PATH=$PATH:/Users/anhdev99/anhdev99/System/flutter/bin
 # Path to your oh-my-zsh installation.
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -119,3 +123,8 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 
 source ~/.zshrc.local
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
